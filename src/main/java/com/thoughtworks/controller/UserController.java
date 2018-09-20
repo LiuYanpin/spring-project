@@ -1,18 +1,24 @@
 package com.thoughtworks.controller;
 
+import com.thoughtworks.domain.User;
 import com.thoughtworks.repository.UserRepository;
 import com.thoughtworks.repository.impl.UserRepositoryImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class UserController {
-    private UserRepository userRepositor = new UserRepositoryImpl();
+    private UserRepository userRepository = new UserRepositoryImpl();
+
     @GetMapping("/api/users")
-    public ResponseEntity getUsers() {
-        return new ResponseEntity(userRepositor.getUsers(), HttpStatus.OK);
+    public ResponseEntity queryUsers() {
+        return new ResponseEntity(userRepository.getUsers(), HttpStatus.OK);
     }
 
+    @PostMapping("/api/users")
+    public ResponseEntity createUser(@RequestBody User user) {
+        userRepository.putUser(user);
+        return new ResponseEntity(user, HttpStatus.CREATED);
+    }
 }

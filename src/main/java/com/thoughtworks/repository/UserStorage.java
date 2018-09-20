@@ -10,7 +10,6 @@ import java.util.Map;
 public class UserStorage {
     private static final Map<Integer, User> USERS = new HashMap<>();
 
-
     public static void clear() {
         USERS.clear();
     }
@@ -21,5 +20,9 @@ public class UserStorage {
 
     public static Collection<User> getUsers() {
         return USERS.values();
+    }
+
+    public static void putUser(User user) {
+        USERS.put(user.getId(), user);
     }
 }

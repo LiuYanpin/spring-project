@@ -7,4 +7,5 @@ import java.util.Collection;
 public interface UserRepository {
     Collection<User> getUsers();
 
+    void putUser(User user);
 }

@@ -11,4 +11,9 @@ public class UserRepositoryImpl implements UserRepository {
     public Collection<User> getUsers() {
         return UserStorage.getUsers();
     }
+
+    @Override
+    public void putUser(User user) {
+        UserStorage.putUser(user);
+    }
 }
