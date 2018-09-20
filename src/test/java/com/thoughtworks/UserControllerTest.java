@@ -54,34 +54,15 @@ public class UserControllerTest {
 
     @Test
     void should_put_user_correctly() throws Exception{
-        User user = new User(1, "liu yanping");
-        UserStorage.putUser(user);
+        User newUser = new User(1, "liu yanping");
+        UserStorage.putUser(newUser);
         User updateUser = new User(1, "liu ping");
-        mockMvc.perform(post("/api/users/1")
+        mockMvc.perform(put("/api/users/1")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(new ObjectMapper().writeValueAsString(updateUser)))
                 .andExpect(status().isAccepted())
-                .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.name").value("liu ping"));
-
-        String updateName = UserStorage.getUserById(1).getName();
-        //assertThat(updateName).isEqualTo("liu ping");
-    }
-
-    @Test
-    void should_put_user_correctly_by_user() throws Exception{
-        User newUser = new User(1, "liu yanping");
-        UserStorage.putUser(newUser);
-        User updatedUser = new User(1, "sun ming");
-        mockMvc.perform(put("/api/users/1")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(new ObjectMapper().writeValueAsString(updatedUser)))
-                .andExpect(status().isAccepted())
-                .andExpect(jsonPath("$.name").value("sun ming"))
+                .andExpect(jsonPath("$.name").value("liu ping"))
                 .andExpect(jsonPath("$.id").value("1"));
-
-        String updatedName = UserStorage.getUserById(1).getName();
-        assertThat(updatedName).isEqualTo("sun ming");
     }
 
     @Test

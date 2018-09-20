@@ -24,8 +24,7 @@ public class UserController {
 
     @PutMapping("/api/users/{id}")
     public ResponseEntity updateUser(@PathVariable int id, @RequestBody User user) {
-        User updateUser = userRepository.updateUser(id, user);
-        return new ResponseEntity(user, HttpStatus.ACCEPTED);
+        return new ResponseEntity(userRepository.updateUser(id, user), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/api/users/{id}")
