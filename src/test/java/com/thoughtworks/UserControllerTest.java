@@ -12,8 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
@@ -51,6 +50,50 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.name").value("sun ming"));
         int afterSize = UserStorage.getUsers().size();
         assertThat(afterSize).isEqualTo(previousSize + 1);
+    }
+
+    @Test
+    void should_put_user_correctly() throws Exception{
+        User user = new User(1, "liu yanping");
+        UserStorage.putUser(user);
+        User updateUser = new User(1, "liu ping");
+        mockMvc.perform(post("/api/users/1")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(new ObjectMapper().writeValueAsString(updateUser)))
+                .andExpect(status().isAccepted())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.name").value("liu ping"));
+
+        String updateName = UserStorage.getUserById(1).getName();
+        //assertThat(updateName).isEqualTo("liu ping");
+    }
+
+    @Test
+    void should_put_user_correctly_by_user() throws Exception{
+        User newUser = new User(1, "liu yanping");
+        UserStorage.putUser(newUser);
+        User updatedUser = new User(1, "sun ming");
+        mockMvc.perform(put("/api/users/1")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(new ObjectMapper().writeValueAsString(updatedUser)))
+                .andExpect(status().isAccepted())
+                .andExpect(jsonPath("$.name").value("sun ming"))
+                .andExpect(jsonPath("$.id").value("1"));
+
+        String updatedName = UserStorage.getUserById(1).getName();
+        assertThat(updatedName).isEqualTo("sun ming");
+    }
+
+    @Test
+    void should_delete_user() throws Exception{
+        User user = new User(1, "liu yanping");
+        UserStorage.putUser(user);
+        mockMvc.perform(delete("/api/users/1"))
+               .andExpect(status().isNoContent());
+
+        assertThat(UserStorage.getUsers().size()).isEqualTo(0);
+        assertThat(UserStorage.getUserById(1)).isNull();
+
     }
 
     @AfterEach

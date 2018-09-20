@@ -21,4 +21,19 @@ public class UserController {
         userRepository.putUser(user);
         return new ResponseEntity(user, HttpStatus.CREATED);
     }
+
+    @PutMapping("/api/users/{id}")
+    public ResponseEntity updateUser(@PathVariable int id, @RequestBody User user) {
+        User updateUser = userRepository.updateUser(id, user);
+        return new ResponseEntity(user, HttpStatus.ACCEPTED);
+    }
+
+    @DeleteMapping("/api/users/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUser(@PathVariable int id) {
+        userRepository.deleteUserById(id);
+    }
+
+
+
 }

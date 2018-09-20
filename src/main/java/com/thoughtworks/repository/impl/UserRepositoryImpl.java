@@ -16,4 +16,15 @@ public class UserRepositoryImpl implements UserRepository {
     public void putUser(User user) {
         UserStorage.putUser(user);
     }
+
+    @Override
+    public User updateUser(int id, User user) {
+        UserStorage.putUser(user);
+        return user;
+    }
+
+    @Override
+    public void deleteUserById(int id) {
+        UserStorage.deleteUserById(id);
+    }
 }
