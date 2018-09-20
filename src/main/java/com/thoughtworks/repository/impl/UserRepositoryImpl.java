@@ -5,6 +5,7 @@ import com.thoughtworks.repository.UserRepository;
 import com.thoughtworks.repository.UserStorage;
 
 import java.util.Collection;
+import java.util.List;
 
 public class UserRepositoryImpl implements UserRepository {
     @Override
@@ -26,6 +27,11 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public void putContact(int userid, int contactid) {
         UserStorage.putContactByUserId(userid, contactid);
+    }
+
+    @Override
+    public List<Integer> getContactsByUserId(int userid) {
+        return UserStorage.getContactsByUserId(userid);
     }
 
     @Override

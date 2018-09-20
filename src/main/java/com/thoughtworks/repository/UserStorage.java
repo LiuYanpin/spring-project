@@ -3,10 +3,7 @@ package com.thoughtworks.repository;
 import com.thoughtworks.domain.Contact;
 import com.thoughtworks.domain.User;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class UserStorage {
     private static final Map<Integer, User> USERS = new HashMap<>();
@@ -37,5 +34,9 @@ public class UserStorage {
 
     public static void putContactByUserId(int userid, int contactid) {
         USERS.get(userid).putContact(contactid);
+    }
+
+    public static List<Integer> getContactsByUserId(int userid) {
+        return USERS.get(userid).getContacts();
     }
 }

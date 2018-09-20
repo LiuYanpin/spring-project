@@ -3,6 +3,7 @@ package com.thoughtworks.repository;
 import com.thoughtworks.domain.User;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface UserRepository {
     Collection<User> getUsers();
@@ -14,4 +15,6 @@ public interface UserRepository {
     void deleteUserById(int id);
 
     void putContact(int userid, int contact);
+
+    List<Integer> getContactsByUserId(int userid);
 }

@@ -25,6 +25,7 @@ public class UserControllerTest {
     void setup() {
         mockMvc = standaloneSetup(controller()).build();
         UserStorage.clear();
+        ContactStorage.clear();
     }
 
     private Object controller() {
@@ -87,8 +88,30 @@ public class UserControllerTest {
         assertThat(ContactStorage.getContacts().size()).isEqualTo(1);
     }
 
+    @Test
+    void should_get_contacts_of_user() throws Exception{
+        User user = new User(5, "sjyuan");
+        UserStorage.putUser(user);
+        ContactStorage.putContact(new Contact(1, "dq", "male", "13001211212", 16));
+        ContactStorage.putContact(new Contact(2, "liuxia", "male", "13212312312", 18));
+        user.putContact(1);
+        user.putContact(2);
+        mockMvc.perform(get("/api/users/5/contacts"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0].name").value("dq"))
+                .andExpect(jsonPath("$.[0].gender").value("male"))
+                .andExpect(jsonPath("$.[0].telephone").value("13001211212"))
+                .andExpect(jsonPath("$.[0].age").value(16))
+                .andExpect(jsonPath("$.[1].name").value("liuxia"))
+                .andExpect(jsonPath("$.[1].gender").value("male"))
+                .andExpect(jsonPath("$.[1].telephone").value("13212312312"))
+                .andExpect(jsonPath("$.[1].age").value(18));
+        assertThat(ContactStorage.getContacts().size()).isEqualTo(2);
+    }
+
     @AfterEach
     void teardown() {
         UserStorage.clear();
+        ContactStorage.clear();
     }
 }

@@ -9,6 +9,7 @@ import com.thoughtworks.repository.impl.UserRepositoryImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 public class UserController {
@@ -36,10 +37,19 @@ public class UserController {
         userRepository.deleteUserById(id);
     }
 
+    @GetMapping("/api/users/{userid}/contacts")
+    public ResponseEntity getContactsByUser(@PathVariable int userid) {
+        List<Integer> userContacts = userRepository.getContactsByUserId(userid);
+        List<Contact> contacts = contactRepository.getContacts(userContacts);
+        return new ResponseEntity(contacts, HttpStatus.OK);
+    }
+
     @PostMapping("/api/users/{userid}/contacts")
     public ResponseEntity createContactByUserId(@PathVariable int userid, @RequestBody Contact contact) {
         userRepository.putContact(userid, contact.getId());
         contactRepository.putContact(contact);
         return new ResponseEntity(HttpStatus.CREATED);
     }
+
+
 }

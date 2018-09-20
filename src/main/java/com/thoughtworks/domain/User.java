@@ -34,4 +34,8 @@ public class User {
     public void putContact(int contactid) {
         contacts.add(contactid);
     }
+
+    public List<Integer> getContacts() {
+        return contacts;
+    }
 }
