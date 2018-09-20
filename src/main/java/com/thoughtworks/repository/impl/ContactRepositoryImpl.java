@@ -19,6 +19,11 @@ public class ContactRepositoryImpl implements ContactRepository {
     }
 
     @Override
+    public Contact getContactByIdAndName(List<Integer> contactids, String contactname) {
+        return ContactStorage.queryContactByIdAndName(contactids, contactname);
+    }
+
+    @Override
     public void deleteContact(int contactid) {
         ContactStorage.deleteContact(contactid);
     }

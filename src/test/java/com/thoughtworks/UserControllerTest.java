@@ -156,7 +156,20 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$", hasSize(1)));
     }
 
+    @Test
+    void should_query_contact_by_name_of_user() throws Exception{
+        User user = new User(5, "sjyuan");
+        UserStorage.putUser(user);
+        ContactStorage.putContact(new Contact(1, "yang kaiguang", "male", "13001211212", 16));
+        user.putContact(1);
+        mockMvc.perform(get("/api/users/5/contacts/yang kaiguang"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("yang kaiguang"))
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.telephone").value("13001211212"))
+                .andExpect(jsonPath("$.age").value(16));
 
+    }
 
     @AfterEach
     void teardown() {

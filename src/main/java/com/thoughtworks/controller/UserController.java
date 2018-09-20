@@ -63,5 +63,12 @@ public class UserController {
         contactRepository.deleteContact(contactid);
     }
 
+    @GetMapping("/api/users/{userid}/contacts/{contactname}")
+    public ResponseEntity getContactByNameOfUser(@PathVariable int userid, @PathVariable String contactname) {
+        List<Integer> contactids = userRepository.getContactsByUserId(userid);
+        Contact contactResult = contactRepository.getContactByIdAndName(contactids, contactname);
+        return new ResponseEntity(contactResult, HttpStatus.OK);
+    }
+
 
 }

@@ -27,4 +27,8 @@ public class ContactStorage {
     public static void deleteContact(int contactid) {
         CONTACTS.remove(contactid);
     }
+
+    public static Contact queryContactByIdAndName(List<Integer> contactids, String contactname) {
+        return contactids.stream().map(contactid -> CONTACTS.get(contactid)).filter(contact -> contact.getName().equals(contactname)).findFirst().get();
+    }
 }
