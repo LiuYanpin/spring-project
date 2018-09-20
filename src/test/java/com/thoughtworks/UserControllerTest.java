@@ -33,7 +33,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void should_return_users() throws Exception{
+    void should_get_users() throws Exception{
         UserStorage.putUsers(new User(1, "sun ming"), new User(2, "liu yanping"));
         mockMvc.perform(get("/api/users"))
                 .andExpect(status().isOk())
@@ -108,6 +108,55 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.[1].age").value(18));
         assertThat(ContactStorage.getContacts().size()).isEqualTo(2);
     }
+
+    @Test
+    void should_put_contact_of_user() throws Exception{
+        User user = new User(5, "sjyuan");
+        UserStorage.putUser(user);
+        ContactStorage.putContact(new Contact(1, "dq", "male", "13001211212", 16));
+        ContactStorage.putContact(new Contact(2, "liuxia", "male", "13212312312", 18));
+        user.putContact(1);
+        user.putContact(2);
+        Contact updateContact = new Contact(2, "liuxia", "male", "18978897866", 20);
+
+        mockMvc.perform(get("/api/users/5/contacts"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)));
+
+        mockMvc.perform(put("/api/users/5/contacts")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(new ObjectMapper().writeValueAsString(updateContact)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("liuxia"))
+                .andExpect(jsonPath("$.telephone").value("18978897866"))
+                .andExpect(jsonPath("$.age").value(20));
+
+        mockMvc.perform(get("/api/users/5/contacts"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)));
+    }
+
+    @Test
+    void should_delete_contact_of_user() throws Exception{
+        User user = new User(5, "sjyuan");
+        UserStorage.putUser(user);
+        ContactStorage.putContact(new Contact(1, "dq", "male", "13001211212", 16));
+        ContactStorage.putContact(new Contact(2, "liuxia", "male", "13212312312", 18));
+        user.putContact(1);
+        user.putContact(2);
+        mockMvc.perform(get("/api/users/5/contacts"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)));
+
+        mockMvc.perform(delete("/api/users/5/contacts/1"))
+                .andExpect(status().isNoContent());
+
+        mockMvc.perform(get("/api/users/5/contacts"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
+    }
+
+
 
     @AfterEach
     void teardown() {

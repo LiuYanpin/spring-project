@@ -8,4 +8,8 @@ public interface ContactRepository {
     void putContact(Contact contact);
 
     List<Contact> getContacts(List<Integer> userContacts);
+
+    Contact updateContact(Contact contact);
+
+    void deleteContact(int contactid);
 }

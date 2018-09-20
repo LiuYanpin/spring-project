@@ -51,5 +51,17 @@ public class UserController {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
+    @PutMapping("/api/users/{userid}/contacts")
+    public ResponseEntity updateContact(@PathVariable int userid, @RequestBody Contact contact) {
+        return new ResponseEntity(contactRepository.updateContact(contact), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/api/users/{userid}/contacts/{contactid}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteContact(@PathVariable int userid, @PathVariable int contactid) {
+        userRepository.deleteContactByUserId(userid, contactid);
+        contactRepository.deleteContact(contactid);
+    }
+
 
 }

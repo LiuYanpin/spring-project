@@ -17,4 +17,6 @@ public interface UserRepository {
     void putContact(int userid, int contact);
 
     List<Integer> getContactsByUserId(int userid);
+
+    void deleteContactByUserId(int userid, int contactid);
 }

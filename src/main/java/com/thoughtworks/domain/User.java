@@ -38,4 +38,8 @@ public class User {
     public List<Integer> getContacts() {
         return contacts;
     }
+
+    public void deleteContact(int contactid) {
+        contacts.remove(contactid);
+    }
 }

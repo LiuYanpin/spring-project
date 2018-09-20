@@ -39,4 +39,8 @@ public class UserStorage {
     public static List<Integer> getContactsByUserId(int userid) {
         return USERS.get(userid).getContacts();
     }
+
+    public static void deleteContactByUserId(int userid, int contactid) {
+        USERS.get(userid).deleteContact(contactid);
+    }
 }

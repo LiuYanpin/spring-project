@@ -23,4 +23,8 @@ public class ContactStorage {
     public static List<Contact> getContactsByUserId(List<Integer> userContacts) {
         return userContacts.stream().map(contactid -> CONTACTS.get(contactid)).collect(Collectors.toList());
     }
+
+    public static void deleteContact(int contactid) {
+        CONTACTS.remove(contactid);
+    }
 }

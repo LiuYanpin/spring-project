@@ -30,6 +30,11 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public void deleteContactByUserId(int userid, int contactid) {
+        UserStorage.deleteContactByUserId(userid, contactid);
+    }
+
+    @Override
     public List<Integer> getContactsByUserId(int userid) {
         return UserStorage.getContactsByUserId(userid);
     }
