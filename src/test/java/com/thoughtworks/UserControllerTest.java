@@ -2,7 +2,9 @@ package com.thoughtworks;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.controller.UserController;
+import com.thoughtworks.domain.Contact;
 import com.thoughtworks.domain.User;
+import com.thoughtworks.repository.ContactStorage;
 import com.thoughtworks.repository.UserStorage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,8 +56,7 @@ public class UserControllerTest {
 
     @Test
     void should_put_user_correctly() throws Exception{
-        User newUser = new User(1, "liu yanping");
-        UserStorage.putUser(newUser);
+        UserStorage.putUser(new User(1, "liu yanping"));
         User updateUser = new User(1, "liu ping");
         mockMvc.perform(put("/api/users/1")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -67,14 +68,23 @@ public class UserControllerTest {
 
     @Test
     void should_delete_user() throws Exception{
-        User user = new User(1, "liu yanping");
-        UserStorage.putUser(user);
+        UserStorage.putUser(new User(1, "liu yanping"));
         mockMvc.perform(delete("/api/users/1"))
                .andExpect(status().isNoContent());
 
         assertThat(UserStorage.getUsers().size()).isEqualTo(0);
         assertThat(UserStorage.getUserById(1)).isNull();
+    }
 
+    @Test
+    void should_create_contact_of_user() throws Exception{
+        UserStorage.putUser(new User(5, "sjyuan"));
+        Contact contact = new Contact(1, "dq", "male", "13001211212", 16);
+        mockMvc.perform(post("/api/users/5/contacts")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(new ObjectMapper().writeValueAsString(contact)))
+                .andExpect(status().isCreated());
+        assertThat(ContactStorage.getContacts().size()).isEqualTo(1);
     }
 
     @AfterEach

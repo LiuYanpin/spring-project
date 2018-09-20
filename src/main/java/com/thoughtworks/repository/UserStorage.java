@@ -1,5 +1,6 @@
 package com.thoughtworks.repository;
 
+import com.thoughtworks.domain.Contact;
 import com.thoughtworks.domain.User;
 
 import java.util.Arrays;
@@ -32,5 +33,9 @@ public class UserStorage {
 
     public static void deleteUserById(int id) {
         USERS.remove(id);
+    }
+
+    public static void putContactByUserId(int userid, int contactid) {
+        USERS.get(userid).putContact(contactid);
     }
 }

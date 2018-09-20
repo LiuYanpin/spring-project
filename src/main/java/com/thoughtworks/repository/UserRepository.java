@@ -12,4 +12,6 @@ public interface UserRepository {
     User updateUser(int id, User user);
 
     void deleteUserById(int id);
+
+    void putContact(int userid, int contact);
 }

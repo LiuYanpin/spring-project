@@ -1,7 +1,10 @@
 package com.thoughtworks.controller;
 
+import com.thoughtworks.domain.Contact;
 import com.thoughtworks.domain.User;
+import com.thoughtworks.repository.ContactRepository;
 import com.thoughtworks.repository.UserRepository;
+import com.thoughtworks.repository.impl.ContactRepositoryImpl;
 import com.thoughtworks.repository.impl.UserRepositoryImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class UserController {
     private UserRepository userRepository = new UserRepositoryImpl();
-
+    private ContactRepository contactRepository = new ContactRepositoryImpl();
     @GetMapping("/api/users")
     public ResponseEntity queryUsers() {
         return new ResponseEntity(userRepository.getUsers(), HttpStatus.OK);
@@ -33,6 +36,10 @@ public class UserController {
         userRepository.deleteUserById(id);
     }
 
-
-
+    @PostMapping("/api/users/{userid}/contacts")
+    public ResponseEntity createContactByUserId(@PathVariable int userid, @RequestBody Contact contact) {
+        userRepository.putContact(userid, contact.getId());
+        contactRepository.putContact(contact);
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
 }

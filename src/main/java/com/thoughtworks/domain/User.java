@@ -1,9 +1,12 @@
 package com.thoughtworks.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
     private int id;
     private String name;
-
+    private List<Integer> contacts = new ArrayList<>();
     public User() {
     }
 
@@ -26,5 +29,9 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void putContact(int contactid) {
+        contacts.add(contactid);
     }
 }
